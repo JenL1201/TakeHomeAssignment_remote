@@ -56,48 +56,50 @@ class TokenModel {
         }
     }
     
-    // Codable: structure can be endoded or decoded
-    struct TokenResponse : Codable {
-        
-        // Customize keys "tokens"
-        enum CodingKeys : String, CodingKey {
-            case tokens = "tokens"
-        }
-        
-        var tokens : [Token]
+    
+}
+
+// Codable: structure can be endoded or decoded
+struct TokenResponse : Codable {
+    
+    // Customize keys "tokens"
+    enum CodingKeys : String, CodingKey {
+        case tokens = "tokens"
+    }
+    
+    var tokens : [Token]
+}
+
+struct Token: Codable {
+    
+    // Customize five keys: "token_name", "token_price", "price_increase", "trading_volume" and "market_cap"
+    enum CodingKeys : String, CodingKey {
+        // Maps each key in the JSON string to each property name
+        case tokenName = "token_name"
+        case tokenPrice = "token_price"
+        case priceIncrease = "price_increase"
+        case tradingVolume = "trading_volume"
+        case marketCap = "market_cap"
+    }
+    
+    // Declare types of each property
+    var tokenName : String
+    var tokenPrice : Float
+    var priceIncrease : Float
+    // optional because it may be nil
+    var tradingVolume : Float?
+    var marketCap : Float?
+    
+    // Create Token instance using JSONDecoder
+    init(from decoder: Decoder) throws {
+        // Use custom keys that defined above to create a container for decoding
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        // Decode string value addociated with "tokenName" and assign it to self.tokenName
+        self.tokenName = try container.decode(String.self, forKey: .tokenName)
+        self.tokenPrice = try container.decode(Float.self, forKey: .tokenPrice)
+        self.priceIncrease = try container.decode(Float.self, forKey: .priceIncrease)
     }
 
-    struct Token: Codable {
-        
-        // Customize five keys: "token_name", "token_price", "price_increase", "trading_volume" and "market_cap"
-        enum CodingKeys : String, CodingKey {
-            // Maps each key in the JSON string to each property name
-            case tokenName = "token_name"
-            case tokenPrice = "token_price"
-            case priceIncrease = "price_increase"
-            case tradingVolume = "trading_volume"
-            case marketCap = "market_cap"
-        }
-        
-        // Declare types of each property
-        var tokenName : String
-        var tokenPrice : Float
-        var priceIncrease : Float
-        // optional because it may be nil
-        var tradingVolume : Float?
-        var marketCap : Float?
-        
-        // Create Token instance using JSONDecoder
-        init(from decoder: Decoder) throws {
-            // Use custom keys that defined above to create a container for decoding
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            // Decode string value addociated with "tokenName" and assign it to self.tokenName
-            self.tokenName = try container.decode(String.self, forKey: .tokenName)
-            self.tokenPrice = try container.decode(Float.self, forKey: .tokenPrice)
-            self.priceIncrease = try container.decode(Float.self, forKey: .priceIncrease)
-        }
-
-    }
 }
 
 
