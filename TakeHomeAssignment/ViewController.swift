@@ -15,8 +15,6 @@ class ViewController: UIViewController {
     // Create Table View
     lazy var tableView: UITableView = {
         let table = UITableView()
-        // Use auto layout
-        table.translatesAutoresizingMaskIntoConstraints = false
         // Respond to delegate method (row selection)
         table.delegate = self
         // Provide data to table view
@@ -31,7 +29,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.addSubview(tableView)
-        
+        // Use auto layout
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         // Set up constraints for tableView (top, bottom, left, right)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -39,7 +38,7 @@ class ViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
+        self.title = "Token List"
     }
 
 
@@ -48,7 +47,10 @@ class ViewController: UIViewController {
 // Handle row selection
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        if let token = tokenInfo.list?.tokens[indexPath.row] {
+            let tokenDetails = TokenDetailsView(token: token)
+            self.navigationController?.pushViewController(tokenDetails, animated: true)
+        }
     }
 }
 
