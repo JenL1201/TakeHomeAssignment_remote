@@ -8,9 +8,7 @@
 import Foundation
 import UIKit
 
-// Codable: structure can be endoded or decoded
 struct TokenResponse : Codable {
-
     // Customize keys "tokens"
     enum CodingKeys : String, CodingKey {
         case tokens = "tokens"
@@ -20,7 +18,6 @@ struct TokenResponse : Codable {
 }
 
 struct Token: Codable {
-    
     enum CodingKeys : String, CodingKey {
         // Maps each key in the JSON string to each property name
         case tokenName = "token_name"
@@ -45,7 +42,6 @@ struct Token: Codable {
         self.tokenPrice = try container.decode(Float.self, forKey: .tokenPrice)
         self.priceIncrease = try container.decode(Float.self, forKey: .priceIncrease)
     }
-
 }
 
 // Set text color for price change

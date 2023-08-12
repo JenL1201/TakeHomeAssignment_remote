@@ -10,26 +10,19 @@ import UIKit
 
 class TokenListView: UITableViewCell {
     
-    // MARK: - Create Label for each Properties
-    private func createLabel(_ fontSize: CGFloat,_ weight: UIFont.Weight) -> UILabel {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: fontSize, weight: weight)
-        return label
-    }
-    
     private lazy var tokenNameLabel: UILabel = {
-        createLabel(20, .medium)
+        UILabel.createLabel(20, .medium)
     }()
     
     private lazy var tokenPriceLabel: UILabel = {
-        createLabel(16, .medium)
+        UILabel.createLabel(20, .medium)
     }()
     
     private lazy var priceIncreaseLabel: UILabel = {
-        createLabel(16, .medium)
+        UILabel.createLabel(20, .medium)
     }()
     
-    // Vertical stack view for tokenPriceLabel and priceIncreaseLabel
+    // Vertical stack view
     private lazy var VStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [tokenPriceLabel, priceIncreaseLabel])
         stack.axis = .vertical
@@ -38,7 +31,7 @@ class TokenListView: UITableViewCell {
         return stack
     }()
     
-    // Horizontal stack view for tokenNameLabel and VStackView
+    // Horizontal stack view
     private lazy var HStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [tokenNameLabel, VStackView])
         stack.axis = .horizontal
@@ -46,6 +39,7 @@ class TokenListView: UITableViewCell {
         stack.alignment = .center
         return stack
     }()
+    
     
     // MARK: - Initialize
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
@@ -87,6 +81,5 @@ class TokenListView: UITableViewCell {
         priceIncreaseLabel.text = token.priceUpdate.text
         priceIncreaseLabel.textColor = token.priceUpdate.color
     }
-    
-    
 }
+

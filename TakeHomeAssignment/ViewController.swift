@@ -11,8 +11,14 @@ class ViewController: UIViewController {
     
     // Provide data from `TokenViewModel` for view controller
     let tokenInfo = TokenViewModel()
+    
+    // MARK: - Add Pull-to-refresh functionality
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: .valueChanged)
+        return refreshControl
+    }()
 
-    // Create Table View
     lazy var tableView: UITableView = {
         let table = UITableView()
         // Respond to delegate method (row selection)
@@ -20,10 +26,19 @@ class ViewController: UIViewController {
         // Provide data to table view
         table.dataSource = self
         table.register(TokenListView.self, forCellReuseIdentifier: "cell")
+        table.refreshControl = refreshControl
         return table
     }()
     
-
+    // Handle refresh
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        tokenInfo.fetchData { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+                refreshControl.endRefreshing()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +55,6 @@ class ViewController: UIViewController {
         ])
         self.title = "Token List"
     }
-
-
 }
 
 // MARK: - UITableViewDelegate: Handle row selection
@@ -56,12 +69,10 @@ extension ViewController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource: Provide data sources (number of rows and cells for each row)
 extension ViewController: UITableViewDataSource {
-    // Return number of tokens
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tokenInfo.list?.tokens.count ?? 0
     }
     
-    // Return cells for each given row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TokenListView
         // Access tokens array from list and get token at specified row

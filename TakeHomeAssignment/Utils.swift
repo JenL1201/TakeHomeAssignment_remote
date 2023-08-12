@@ -6,6 +6,16 @@
 //
 
 import Foundation
+import UIKit
+
+extension UILabel {
+    static func createLabel(_ fontSize: CGFloat,_ weight: UIFont.Weight, _ alignment: NSTextAlignment = .left) -> UILabel {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: fontSize, weight: weight)
+        label.textAlignment = alignment
+        return label
+    }
+}
 
 // Return the formatted price in String
 func customFormattedPrice(_ price: Float) -> String {
