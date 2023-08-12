@@ -9,8 +9,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    // Provide data from `TokenModel` for view controller
-    let tokenInfo = TokenModel()
+    // Provide data from `TokenViewModel` for view controller
+    let tokenInfo = TokenViewModel()
 
     // Create Table View
     lazy var tableView: UITableView = {
@@ -44,7 +44,7 @@ class ViewController: UIViewController {
 
 }
 
-// Handle row selection
+// MARK: - UITableViewDelegate: Handle row selection
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let token = tokenInfo.list?.tokens[indexPath.row] {
@@ -54,7 +54,7 @@ extension ViewController: UITableViewDelegate {
     }
 }
 
-// Provide data sources (number of rows and cells for each row)
+// MARK: - UITableViewDataSource: Provide data sources (number of rows and cells for each row)
 extension ViewController: UITableViewDataSource {
     // Return number of tokens
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

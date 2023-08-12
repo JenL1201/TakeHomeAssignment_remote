@@ -12,45 +12,34 @@ class TokenDetailsView : UIViewController {
     
     var token: Token
     
+    // MARK: - Create Label for each Properties
+    private func createLabel(_ fontSize: CGFloat,_ weight: UIFont.Weight) -> UILabel {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: fontSize, weight: weight)
+        label.textAlignment = .center
+        return label
+    }
+    
     // UI Components
-    // Create a label for tokenName
-    private let tokenNameLabel : UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 26, weight: .bold)
-        label.textAlignment = .center
-        return label
+    // `lazy` -> until first accessed
+    private lazy var tokenNameLabel : UILabel = {
+        createLabel(26, .bold)
     }()
     
-    // Create a label for tokenPrice
-    private let tokenPriceLabel : UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
-        label.textAlignment = .center
-        return label
+    private lazy var tokenPriceLabel : UILabel = {
+        createLabel(22, .medium)
     }()
     
-    // Create a label for priceIncrease
-    private let priceIncreaseLabel : UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
-        label.textAlignment = .center
-        return label
+    private lazy var priceIncreaseLabel : UILabel = {
+        createLabel(18, .regular)
+    }()
+
+    private lazy var tradingVolumeLabel : UILabel = {
+        createLabel(16, .regular)
     }()
     
-    // Create a label for tradingVolume
-    private let tradingVolumeLabel : UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
-        label.textAlignment = .center
-        return label
-    }()
-    
-    // Create a label for marketCap
-    private let marketCapLabel : UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
-        label.textAlignment = .center
-        return label
+    private lazy var marketCapLabel : UILabel = {
+        createLabel(16, .regular)
     }()
     
     // MARK: - Initialize
@@ -64,68 +53,88 @@ class TokenDetailsView : UIViewController {
         fatalError("Not found")
     }
     
+    
+    private func styleInfoBox(_ box: UIView) {
+        box.layer.borderWidth = 0.2
+        box.layer.borderColor = UIColor.gray.cgColor
+        box.layer.cornerRadius = 10
+    }
+
     // Add each label to the TokenDetailsView hierarchy
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = .white
-        
+
+        // Create the UIView box layout
+        let infoBox = UIView()
+        infoBox.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(infoBox)
+
+        // Add the labels into the box layout
+        infoBox.addSubview(tokenPriceLabel)
+        infoBox.addSubview(tradingVolumeLabel)
+        infoBox.addSubview(marketCapLabel)
+
+        // Add the other labels directly to the main view
         view.addSubview(tokenNameLabel)
-        view.addSubview(tokenPriceLabel)
         view.addSubview(priceIncreaseLabel)
-        view.addSubview(tradingVolumeLabel)
-        view.addSubview(marketCapLabel)
-        
+
         // Ensure constraints are applied before the view appears
-        labelConstraints()
+        labelConstraints(box: infoBox)
+        styleInfoBox(infoBox)
         // Ensure data are displayed when the view become visible
         configure()
     }
-    
-    // Setup Auto Layout
-    private func labelConstraints() {
+
+    // MARK: - Constraints for each label
+    private func labelConstraints(box: UIView) {
         tokenNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        tokenPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         priceIncreaseLabel.translatesAutoresizingMaskIntoConstraints = false
+        tokenPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         tradingVolumeLabel.translatesAutoresizingMaskIntoConstraints = false
         marketCapLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // Arrange the layout for each label
+        // Arrange layout constraints for each label in TokenDetailsView
         NSLayoutConstraint.activate([
-            tokenNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tokenNameLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -40),
-            
-            tokenPriceLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tokenPriceLabel.centerYAnchor.constraint(equalTo: tokenNameLabel.bottomAnchor, constant: 20),
-            
-            priceIncreaseLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            priceIncreaseLabel.topAnchor.constraint(equalTo: tokenPriceLabel.bottomAnchor, constant: 20),
-            
-            tradingVolumeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            tradingVolumeLabel.topAnchor.constraint(equalTo:priceIncreaseLabel.bottomAnchor, constant: 20),
-            
-            marketCapLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            marketCapLabel.topAnchor.constraint(equalTo: tradingVolumeLabel.bottomAnchor, constant: 20)
+            box.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            box.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
+            tokenPriceLabel.topAnchor.constraint(equalTo: box.topAnchor, constant: -30),
+            tokenPriceLabel.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 10),
+
+            tradingVolumeLabel.topAnchor.constraint(equalTo: tokenPriceLabel.bottomAnchor, constant: -30),
+            tradingVolumeLabel.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 10),
+
+            marketCapLabel.centerYAnchor.constraint(equalTo: tradingVolumeLabel.centerYAnchor),
+            marketCapLabel.leadingAnchor.constraint(equalTo: tradingVolumeLabel.trailingAnchor, constant: 20),
+
+            box.trailingAnchor.constraint(equalTo: marketCapLabel.trailingAnchor, constant: 10),
+            box.bottomAnchor.constraint(equalTo: tradingVolumeLabel.bottomAnchor, constant: 40),
+            box.heightAnchor.constraint(equalToConstant: 180),
+
+            tokenNameLabel.bottomAnchor.constraint(equalTo: box.topAnchor, constant: -20),
+            tokenNameLabel.leadingAnchor.constraint(equalTo: box.leadingAnchor),
+
+            priceIncreaseLabel.centerYAnchor.constraint(equalTo: tokenNameLabel.centerYAnchor),
+            priceIncreaseLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                    
         ])
     }
+
+    
+
     
     // MARK: - Configure content for detail page
     private func configure() {
-        tokenNameLabel.text = "Token: \(token.tokenName)"
-        tokenNameLabel.textColor = .systemYellow
-        tokenPriceLabel.text = String(format: "Price: %.2f", token.tokenPrice)
+        tokenNameLabel.text = "\(token.tokenName)"
         
-        // Set price increase or decrease color
-        if token.priceIncrease > 0 {
-            priceIncreaseLabel.text = "Price Increased: +\(token.priceIncrease)%"
-            priceIncreaseLabel.textColor = .systemGreen
-        } else if token.priceIncrease < 0 {
-            priceIncreaseLabel.text = "Price Decreased: \(token.priceIncrease)%"
-            priceIncreaseLabel.textColor = .red
-        } else {
-            priceIncreaseLabel.text = "Price remain: \(token.priceIncrease)%"
-            priceIncreaseLabel.textColor = .darkGray
-        }
+        let tokenPrices = customFormattedPrice(token.tokenPrice)
+        tokenPriceLabel.text = "Price: $\(tokenPrices)"
+        
+        // Assign text and textColor according to the priceIncreaseLabel by applying `priceUpdate` method in TokenModel
+        priceIncreaseLabel.text = token.priceUpdate.text
+        priceIncreaseLabel.textColor = token.priceUpdate.color
         
         tradingVolumeLabel.text = String(format: "Trading Volume: $%.2fB", token.tradingVolume ?? 1.25)
         marketCapLabel.text = String(format: "Market Cap: $%.2fM", token.marketCap ?? 2.1)
