@@ -9,37 +9,26 @@ import Foundation
 import UIKit
 
 class TokenDetailsView : UIViewController {
-    
     var token: Token
     
-    // MARK: - Create Label for each Properties
-    private func createLabel(_ fontSize: CGFloat,_ weight: UIFont.Weight) -> UILabel {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: fontSize, weight: weight)
-        label.textAlignment = .center
-        return label
-    }
-    
-    // UI Components
-    // `lazy` -> until first accessed
     private lazy var tokenNameLabel : UILabel = {
-        createLabel(26, .bold)
+        UILabel.createLabel(26, .bold, .center)
     }()
     
     private lazy var tokenPriceLabel : UILabel = {
-        createLabel(22, .medium)
+        UILabel.createLabel(22, .medium, .center)
     }()
     
     private lazy var priceIncreaseLabel : UILabel = {
-        createLabel(18, .regular)
+        UILabel.createLabel(18, .regular, .center)
     }()
 
     private lazy var tradingVolumeLabel : UILabel = {
-        createLabel(16, .regular)
+        UILabel.createLabel(16, .regular, .center)
     }()
     
     private lazy var marketCapLabel : UILabel = {
-        createLabel(16, .regular)
+        UILabel.createLabel(16, .regular, .center)
     }()
     
     // MARK: - Initialize
@@ -50,7 +39,8 @@ class TokenDetailsView : UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Not found")
+        print("Intialization is not supported.")
+        return nil
     }
     
     
@@ -60,7 +50,6 @@ class TokenDetailsView : UIViewController {
         box.layer.cornerRadius = 10
     }
 
-    // Add each label to the TokenDetailsView hierarchy
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -121,9 +110,6 @@ class TokenDetailsView : UIViewController {
                     
         ])
     }
-
-    
-
     
     // MARK: - Configure content for detail page
     private func configure() {
@@ -138,9 +124,5 @@ class TokenDetailsView : UIViewController {
         
         tradingVolumeLabel.text = String(format: "Trading Volume: $%.2fB", token.tradingVolume ?? 1.25)
         marketCapLabel.text = String(format: "Market Cap: $%.2fM", token.marketCap ?? 2.1)
-        
-        
     }
-    
-    
 }

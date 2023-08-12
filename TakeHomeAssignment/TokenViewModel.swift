@@ -12,7 +12,10 @@ class TokenViewModel {
     var list : TokenResponse?
     
     init() {
-        //  // hardcoded JSON string(`jsonString`)
+        loadTokens()
+    }
+    
+    func loadTokens() {
         let jsonString = """
       {
       "tokens": [
@@ -44,17 +47,22 @@ class TokenViewModel {
       ] }
     """
         
-       // Convert into Data object
         let data = jsonString.data(using: .utf8)
         do {
             // Decode Data object into TokenResponse object
             let f = try JSONDecoder().decode(TokenResponse.self, from: data!)
             self.list = f
         } catch {
-            // Handle error (if JSON does not match the `TokenResponse`)
             print("Error parsing JSON data: \(error)")
         }
     }
     
-    
+    func fetchData(completion: @escaping () -> Void) {
+        // Simulate a network delay
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1.0) {
+            
+            // Call the completion handler after simulating data fetch
+            completion()
+        }
+    }
 }
