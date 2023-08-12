@@ -40,9 +40,16 @@ class TokenListView: UITableViewCell {
         addSubview(tokenNameLabel)
         addSubview(tokenPriceLabel)
         addSubview(priceIncreaseLabel)
+        // Apply constraints
         labelConstraints()
     }
     
+    // Needed for subclassing `UITableViewCell` above
+    required init?(coder: NSCoder) {
+        fatalError("Not found")
+    }
+    
+    // Setup constraints for layouts
     private func labelConstraints() {
         tokenNameLabel.translatesAutoresizingMaskIntoConstraints = false
         tokenPriceLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -62,10 +69,6 @@ class TokenListView: UITableViewCell {
         ])
     }
     
-    // Needed for subclassing `UITableViewCell` above
-    required init?(coder: NSCoder) {
-        fatalError("Not found")
-    }
     
     // MARK: - Configure content for each cell
     func configure(with token: Token) {
@@ -75,7 +78,7 @@ class TokenListView: UITableViewCell {
         // Set price increase or decrease color
         if token.priceIncrease > 0 {
             priceIncreaseLabel.text = "+\(token.priceIncrease)%"
-            priceIncreaseLabel.textColor = .green
+            priceIncreaseLabel.textColor = .systemGreen
         } else if token.priceIncrease < 0 {
             priceIncreaseLabel.text = "\(token.priceIncrease)%"
             priceIncreaseLabel.textColor = .red
