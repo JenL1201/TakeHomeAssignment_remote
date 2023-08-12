@@ -10,36 +10,49 @@ import UIKit
 
 class TokenListView: UITableViewCell {
     
-    // Create a label for tokenName
-    private let tokenNameLabel: UILabel = {
+    // MARK: - Create Label for each Properties
+    private func createLabel(_ fontSize: CGFloat,_ weight: UIFont.Weight) -> UILabel {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: fontSize, weight: weight)
         return label
+    }
+    
+    private lazy var tokenNameLabel: UILabel = {
+        createLabel(20, .medium)
     }()
     
-    // Create a label for tokenPrice
-    private let tokenPriceLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        return label
+    private lazy var tokenPriceLabel: UILabel = {
+        createLabel(16, .medium)
     }()
     
-    // Create a label for priceIncrease
-    private let priceIncreaseLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        return label
+    private lazy var priceIncreaseLabel: UILabel = {
+        createLabel(16, .medium)
     }()
     
+    // Vertical stack view for tokenPriceLabel and priceIncreaseLabel
+    private lazy var VStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [tokenPriceLabel, priceIncreaseLabel])
+        stack.axis = .vertical
+        stack.spacing = 4
+        stack.alignment = .trailing
+        return stack
+    }()
+    
+    // Horizontal stack view for tokenNameLabel and VStackView
+    private lazy var HStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [tokenNameLabel, VStackView])
+        stack.axis = .horizontal
+        stack.spacing = 12
+        stack.alignment = .center
+        return stack
+    }()
     
     // MARK: - Initialize
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
         // Call superclass `UITableViewCell` initializer
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        // Add each label to the view
-        addSubview(tokenNameLabel)
-        addSubview(tokenPriceLabel)
-        addSubview(priceIncreaseLabel)
+        // Add HStack View to the TokenListView
+        addSubview(HStackView)
         // Apply constraints
         labelConstraints()
     }
@@ -49,23 +62,17 @@ class TokenListView: UITableViewCell {
         fatalError("Not found")
     }
     
-    // Setup constraints for layouts
+    // MARK: - Constraints for HStackView
     private func labelConstraints() {
-        tokenNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        tokenPriceLabel.translatesAutoresizingMaskIntoConstraints = false
-        priceIncreaseLabel.translatesAutoresizingMaskIntoConstraints = false
+        // Setup constraints for layouts
+        HStackView.translatesAutoresizingMaskIntoConstraints = false
 
-        // Auto Layout constraints
+        // Arrange layouts
         NSLayoutConstraint.activate([
-            tokenNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            tokenNameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-
-            tokenPriceLabel.topAnchor.constraint(equalTo: tokenNameLabel.bottomAnchor, constant: 5),
-            tokenPriceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-
-            priceIncreaseLabel.topAnchor.constraint(equalTo: tokenPriceLabel.bottomAnchor, constant: 5),
-            priceIncreaseLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-            priceIncreaseLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10)
+            HStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            HStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            HStackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            HStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
     }
     
@@ -73,19 +80,12 @@ class TokenListView: UITableViewCell {
     // MARK: - Configure content for each cell
     func configure(with token: Token) {
         tokenNameLabel.text = token.tokenName
-        tokenPriceLabel.text = "\(token.tokenPrice)"
+        let tokenPrices = customFormattedPrice(token.tokenPrice)
+        tokenPriceLabel.text = "$\(tokenPrices)"
         
-        // Set price increase or decrease color
-        if token.priceIncrease > 0 {
-            priceIncreaseLabel.text = "+\(token.priceIncrease)%"
-            priceIncreaseLabel.textColor = .systemGreen
-        } else if token.priceIncrease < 0 {
-            priceIncreaseLabel.text = "\(token.priceIncrease)%"
-            priceIncreaseLabel.textColor = .red
-        } else {
-            priceIncreaseLabel.text = "\(token.priceIncrease)%"
-            priceIncreaseLabel.textColor = .darkGray
-        }
+        // Assign text and textColor
+        priceIncreaseLabel.text = token.priceUpdate.text
+        priceIncreaseLabel.textColor = token.priceUpdate.color
     }
     
     

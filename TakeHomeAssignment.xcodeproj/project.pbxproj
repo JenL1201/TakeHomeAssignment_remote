@@ -15,6 +15,8 @@
 		38348BBB2A86D1A90097C3A6 /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38348BBA2A86D1A90097C3A6 /* TokenModel.swift */; };
 		38348BBD2A86DF490097C3A6 /* TokenListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38348BBC2A86DF490097C3A6 /* TokenListView.swift */; };
 		38348BBF2A87003E0097C3A6 /* TokenDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38348BBE2A87003E0097C3A6 /* TokenDetailsView.swift */; };
+		38348BC12A871A5F0097C3A6 /* TokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38348BC02A871A5F0097C3A6 /* TokenViewModel.swift */; };
+		38348BC32A87376F0097C3A6 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38348BC22A87376F0097C3A6 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		38348BBA2A86D1A90097C3A6 /* TokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
 		38348BBC2A86DF490097C3A6 /* TokenListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenListView.swift; sourceTree = "<group>"; };
 		38348BBE2A87003E0097C3A6 /* TokenDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsView.swift; sourceTree = "<group>"; };
+		38348BC02A871A5F0097C3A6 /* TokenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenViewModel.swift; sourceTree = "<group>"; };
+		38348BC22A87376F0097C3A6 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,8 @@
 				38348BBA2A86D1A90097C3A6 /* TokenModel.swift */,
 				38348BBC2A86DF490097C3A6 /* TokenListView.swift */,
 				38348BBE2A87003E0097C3A6 /* TokenDetailsView.swift */,
+				38348BC02A871A5F0097C3A6 /* TokenViewModel.swift */,
+				38348BC22A87376F0097C3A6 /* Utils.swift */,
 			);
 			path = TakeHomeAssignment;
 			sourceTree = "<group>";
@@ -143,12 +149,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38348BC12A871A5F0097C3A6 /* TokenViewModel.swift in Sources */,
 				38348BBD2A86DF490097C3A6 /* TokenListView.swift in Sources */,
 				38348BA92A86C9250097C3A6 /* ViewController.swift in Sources */,
 				38348BBB2A86D1A90097C3A6 /* TokenModel.swift in Sources */,
 				38348BBF2A87003E0097C3A6 /* TokenDetailsView.swift in Sources */,
 				38348BA52A86C9250097C3A6 /* AppDelegate.swift in Sources */,
 				38348BA72A86C9250097C3A6 /* SceneDelegate.swift in Sources */,
+				38348BC32A87376F0097C3A6 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
